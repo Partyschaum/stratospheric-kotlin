@@ -1,4 +1,6 @@
-# stratospheric-kotlin
+# stratospheric-kotlin 
+
+![build](https://github.com/partyschaum/stratospheric-kotlin/actions/workflows/build.yml/badge.svg)
 
 Implementation of the example project from the book
 [Stratospheric - From Zero to Production with Spring Boot and AWS](https://leanpub.com/stratospheric)
