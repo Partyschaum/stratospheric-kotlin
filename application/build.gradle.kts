@@ -15,9 +15,25 @@ repositories {
     mavenCentral()
 }
 
+val webjarsLocatorCoreVersion = "0.52"
+val bootstrapVersion = "5.2.3"
+val popperVersion = "2.9.3"
+val jQueryVersion = "3.6.3"
+val fontAwesomeVersion = "6.2.1"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+    implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
+
+    implementation("org.webjars:webjars-locator-core:$webjarsLocatorCoreVersion")
+    implementation("org.webjars:bootstrap:$bootstrapVersion")
+    implementation("org.webjars:popper.js:$popperVersion")
+    implementation("org.webjars:jquery:$jQueryVersion")
+    implementation("org.webjars:font-awesome:$fontAwesomeVersion")
+
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
