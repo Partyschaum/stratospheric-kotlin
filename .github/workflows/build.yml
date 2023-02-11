@@ -30,7 +30,7 @@ jobs:
 
       - name: Build application
         working-directory: application
-        run: ./gradlew -q build --stacktrace
+        run: ./gradlew build --stacktrace
         
       - name: Zip build reports
         if: always()
@@ -59,6 +59,7 @@ jobs:
   publish:
     runs-on: ubuntu-22.04
     name: Push the image to the container registry
+    if: github.ref == 'refs/heads/master'
     needs: build
     steps:
 
