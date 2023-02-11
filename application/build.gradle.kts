@@ -55,7 +55,7 @@ tasks.withType<Test> {
 val repoUsername = providers.gradleProperty("repoUsername").get()
 val repoPassword = providers.gradleProperty("repoPassword").get()
 
-val imageTag = providers.gradleProperty("imageTag").orNull
+val imageTag = providers.gradleProperty("imageTag").get().ifBlank { null }
 
 jib {
     from {
