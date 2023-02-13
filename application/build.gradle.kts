@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "3.0.2"
     id("io.spring.dependency-management") version "1.1.0"
+    id("com.google.cloud.tools.jib") version "3.3.1"
     kotlin("jvm") version "1.8.10"
     kotlin("plugin.spring") version "1.8.10"
 }
@@ -49,4 +50,23 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+val repoUsername = providers.gradleProperty("repoUsername").get()
+val repoPassword = providers.gradleProperty("repoPassword").get()
+
+val imageTag = providers.gradleProperty("imageTag").get().ifBlank { null }
+
+jib {
+    from {
+        image = "eclipse-temurin:17-jre"
+    }
+    to {
+        image = "partyschaum/stratospheric-kotlin"
+        tags = setOfNotNull("latest", imageTag)
+        auth {
+            username = repoUsername
+            password = repoPassword
+        }
+    }
 }

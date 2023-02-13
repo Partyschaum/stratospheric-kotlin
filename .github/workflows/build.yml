@@ -11,9 +11,11 @@ on:
       - master
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-22.04
     name: Build the application
+    outputs:
+      dockerImageTag: ${{ steps.dockerImageTag.outputs.tag }}
     steps:
 
       - name: Checkout code
@@ -40,3 +42,51 @@ jobs:
         with:
           name: reports
           path: reports.zip
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        if: success()
+        with:
+          name: application-build-${{ github.run_id }}
+          path: application/build
+          if-no-files-found: error
+
+      - name: Create Docker image tag
+        id: dockerImageTag
+        if: success()
+        run: echo "tag=$(date +'%Y%m%d%H%M%S')-${GITHUB_SHA}" >> $GITHUB_OUTPUT
+
+  publish:
+    runs-on: ubuntu-22.04
+    name: Push the image to the container registry
+    if: github.ref == 'refs/heads/master'
+    needs: build
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'gradle'
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: application-build-${{ github.run_id }}
+          path: application/build
+
+      - name: Build and publish images
+        env:
+          IMAGE_TAG: ${{ needs.build.outputs.dockerImageTag }}
+          REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
+          REPO_PASSWORD: ${{ secrets.REPO_PASSWORD }}
+        working-directory: application
+        run: |
+          ./gradlew \
+              -PrepoUsername=${REPO_USERNAME} \
+              -PrepoPassword="${REPO_PASSWORD}" \
+              -PimageTag="${IMAGE_TAG}" jib
