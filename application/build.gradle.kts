@@ -16,6 +16,7 @@ repositories {
     mavenCentral()
 }
 
+val awsSpringVersion = "2.4.4"
 val webjarsLocatorCoreVersion = "0.52"
 val bootstrapVersion = "5.2.3"
 val popperVersion = "2.9.3"
@@ -26,6 +27,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+    implementation(platform("io.awspring.cloud:spring-cloud-aws-dependencies:$awsSpringVersion"))
+    implementation("io.awspring.cloud:spring-cloud-starter-aws")
 
     implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
 
