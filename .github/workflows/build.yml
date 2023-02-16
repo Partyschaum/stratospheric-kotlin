@@ -14,6 +14,12 @@ on:
     paths:
       - application/**
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -35,11 +41,11 @@ jobs:
       - name: Build application
         working-directory: application
         run: ./gradlew build --stacktrace
-        
+
       - name: Zip build reports
         if: always()
-        run: zip -r reports.zip **/build/reports 
-        
+        run: zip -r reports.zip **/build/reports
+
       - name: Upload build reports
         uses: actions/upload-artifact@v3
         if: failure()
@@ -86,11 +92,7 @@ jobs:
       - name: Build and publish images
         env:
           IMAGE_TAG: ${{ needs.build.outputs.dockerImageTag }}
-          REPO_USERNAME: ${{ secrets.REPO_USERNAME }}
-          REPO_PASSWORD: ${{ secrets.REPO_PASSWORD }}
         working-directory: application
         run: |
-          ./gradlew \
-              -PrepoUsername=${REPO_USERNAME} \
-              -PrepoPassword="${REPO_PASSWORD}" \
-              -PimageTag="${IMAGE_TAG}" jib
+          aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+          ./gradlew -PimageTag="${IMAGE_TAG}" jib
