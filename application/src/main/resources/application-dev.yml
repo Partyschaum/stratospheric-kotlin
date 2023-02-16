@@ -1,0 +1,9 @@
+
+
+cloud:
+  aws:
+    credentials:
+      access-key: foo
+      secret-key: bar
+
+
