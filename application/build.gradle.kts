@@ -56,9 +56,8 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-val repoUsername = providers.gradleProperty("repoUsername").get()
-val repoPassword = providers.gradleProperty("repoPassword").get()
-
+val awsAccountId = providers.gradleProperty("awsAccountId").get()
+val awsRegionId = providers.gradleProperty("awsRegionId").get()
 val imageTag = providers.gradleProperty("imageTag").get().ifBlank { null }
 
 jib {
@@ -66,11 +65,7 @@ jib {
         image = "eclipse-temurin:17-jre"
     }
     to {
-        image = "partyschaum/stratospheric-kotlin"
+        image = "$awsAccountId.dkr.ecr.$awsRegionId.amazonaws.com/todo-app"
         tags = setOfNotNull("latest", imageTag)
-        auth {
-            username = repoUsername
-            password = repoPassword
-        }
     }
 }

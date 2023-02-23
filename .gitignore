@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Node ###
+**/node_modules/
+
+### AWS CDK ###
+**/cdk.out/

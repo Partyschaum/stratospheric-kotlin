@@ -1,0 +1,26 @@
+{
+  "name": "cdk",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "bootstrap": "cdk bootstrap --app \"./gradlew -q run -Papp=BootstrapAppKt\"",
+    "network:deploy": "cdk deploy --app \"./gradlew -q run -Papp=NetworkAppKt\" --require-approval never",
+    "network:destroy": "cdk destroy --app \"./gradlew -q run -Papp=NetworkAppKt\" --force --require-approval never",
+    "repository:deploy": "cdk deploy --app \"./gradlew -q run -Papp=DockerRepositoryAppKt\" --require-approval never",
+    "repository:destroy": "cdk destroy --app \"./gradlew -q run -Papp=DockerRepositoryAppKt\" --force --require-approval never",
+    "service:deploy": "cdk deploy --app \"./gradlew -q run -Papp=ServiceAppKt\" --require-approval never",
+    "service:destroy": "cdk destroy --app \"./gradlew -q run -Papp=ServiceAppKt\" --force --require-approval never",
+    "deploy": "npm run repository:deploy && npm run network:deploy && npm run service:deploy",
+    "destroy": "npm run service:destroy && npm run network:destroy && npm run repository:destroy",
+    "gitHubActionsUser:deploy": "cdk deploy --app \"./gradlew -q run -Papp=GitHubActionsAppKt\" --force --require-approval never",
+    "gitHubActionsUser:destroy": "cdk destroy --app \"./gradlew -q run -Papp=GitHubActionsAppKt\" --force --require-approval never",
+    "java:version": "java -version",
+    "gradle:version": "./gradlew -v"
+  },
+  "devDependencies": {
+    "aws-cdk": "2.63.0"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}
