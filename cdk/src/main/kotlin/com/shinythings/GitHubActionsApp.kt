@@ -34,13 +34,20 @@ fun main() {
     )
 
     val managedGroupPolicies = listOf(
+        "AWSCertificateManagerFullAccess",
+        "AWSCloudFormationFullAccess",
+        "AWSKeyManagementServicePowerUser",
+        "AWSLambda_FullAccess",
+        "AmazonCognitoPowerUser",
         "AmazonEC2ContainerRegistryFullAccess",
         "AmazonEC2FullAccess",
         "AmazonECS_FullAccess",
-        "AmazonCognitoPowerUser",
-        "AWSCloudFormationFullAccess",
-        "AWSLambda_FullAccess",
+        "AmazonMQApiFullAccess",
+        "AmazonRDSFullAccess",
+        "AmazonS3FullAccess",
         "AmazonSSMFullAccess",
+        "IAMReadOnlyAccess",
+        "SystemAdministrator",
     ).map { ManagedPolicy.fromAwsManagedPolicyName(it) }
 
     val gitHubActionsGroup = Group(
