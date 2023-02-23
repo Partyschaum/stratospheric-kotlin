@@ -5,18 +5,18 @@ import software.amazon.awscdk.Stack
 import software.amazon.awscdk.StackProps
 import software.amazon.awscdk.services.iam.AccessKey
 import software.amazon.awscdk.services.iam.AccessKeyProps
-import software.amazon.awscdk.services.iam.Effect
 import software.amazon.awscdk.services.iam.Group
 import software.amazon.awscdk.services.iam.GroupProps
 import software.amazon.awscdk.services.iam.ManagedPolicy
-import software.amazon.awscdk.services.iam.PolicyStatement
 import software.amazon.awscdk.services.iam.User
 import software.amazon.awscdk.services.iam.UserProps
 import software.amazon.awscdk.services.ssm.StringParameter
 
 fun main() {
-    val gitHubActionsGroupName = "GitHubActions"
     val gitHubActionsUserName = "github"
+
+    val gitHubActionsGroupName1 = "GitHubActions1"
+    val gitHubActionsGroupName2 = "GitHubActions2"
 
     val app = App()
 
@@ -35,87 +35,50 @@ fun main() {
             .build(),
     )
 
-    val managedGroupPolicies = listOf(
+    val managedGroupPolicies1 = listOf(
+        "AWSCertificateManagerFullAccess",
         "AWSCloudFormationFullAccess",
+        "AWSKeyManagementServicePowerUser",
         "AWSLambda_FullAccess",
         "AmazonCognitoPowerUser",
         "AmazonEC2ContainerRegistryFullAccess",
         "AmazonEC2FullAccess",
         "AmazonECS_FullAccess",
-        "AmazonS3FullAccess",
-        "AmazonSSMFullAccess",
+        "AmazonMQApiFullAccess",
+        "AmazonRDSFullAccess",
     ).map { ManagedPolicy.fromAwsManagedPolicyName(it) }
 
-    val gitHubActionsGroup = Group(
+    val managedGroupPolicies2 = listOf(
+        "AmazonS3FullAccess",
+        "AmazonSSMFullAccess",
+        "IAMReadOnlyAccess",
+        "job-function/SystemAdministrator",
+    ).map { ManagedPolicy.fromAwsManagedPolicyName(it) }
+
+    val gitHubActionsGroup1 = Group(
         gitHubActionsStack,
-        "GitHubActionsGroup",
+        "GitHubActionsGroup1",
         GroupProps.builder()
-            .groupName(gitHubActionsGroupName)
-            .managedPolicies(managedGroupPolicies)
+            .groupName(gitHubActionsGroupName1)
+            .managedPolicies(managedGroupPolicies1)
             .build()
-    ).also {
-        it.addToPolicy(
-            PolicyStatement.Builder.create()
-                .sid("GetAuthorizationToken")
-                .effect(Effect.ALLOW)
-                .actions(listOf("ecr:GetAuthorizationToken"))
-                .resources(listOf("*"))
-                .build()
-        )
-        it.addToPolicy(
-            PolicyStatement.Builder.create()
-                .sid("ListImagesInRepository")
-                .effect(Effect.ALLOW)
-                .actions(listOf("ecr:ListImages"))
-                .resources(listOf("*"))
-                .build()
-        )
-        it.addToPolicy(
-            PolicyStatement.Builder.create()
-                .sid("ManageRepositoryContents")
-                .effect(Effect.ALLOW)
-                .actions(
-                    listOf(
-                        "ecr:BatchCheckLayerAvailability",
-                        "ecr:GetDownloadUrlForLayer",
-                        "ecr:GetRepositoryPolicy",
-                        "ecr:DescribeRepositories",
-                        "ecr:ListImages",
-                        "ecr:DescribeImages",
-                        "ecr:BatchGetImage",
-                        "ecr:InitiateLayerUpload",
-                        "ecr:UploadLayerPart",
-                        "ecr:CompleteLayerUpload",
-                        "ecr:PutImage",
-                    )
-                )
-                .resources(listOf("*"))
-                .build()
-        )
-        it.addToPolicy(
-            PolicyStatement.Builder.create()
-                .sid("GetSSMParameters")
-                .effect(Effect.ALLOW)
-                .actions(
-                    listOf(
-                        "ssm:DescribeParameters",
-                        "ssm:GetParameters",
-                        "ssm:GetParameter",
-                        "ssm:GetParametersByPath",
-                    )
-                )
-                .resources(listOf("*"))
-                .build()
-        )
-    }
+    )
+
+    val gitHubActionsGroup2 = Group(
+        gitHubActionsStack,
+        "GitHubActionsGroup2",
+        GroupProps.builder()
+            .groupName(gitHubActionsGroupName2)
+            .managedPolicies(managedGroupPolicies2)
+            .build()
+    )
 
     val gitHubActionsUser = User(
         gitHubActionsStack,
         "GitHubActionsUser",
         UserProps.builder()
             .userName(gitHubActionsUserName)
-            .managedPolicies(managedGroupPolicies)
-            .groups(listOf(gitHubActionsGroup))
+            .groups(listOf(gitHubActionsGroup1, gitHubActionsGroup2))
             .build()
     )
 
