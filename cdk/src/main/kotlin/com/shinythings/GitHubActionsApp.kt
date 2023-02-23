@@ -36,12 +36,13 @@ fun main() {
     )
 
     val managedGroupPolicies = listOf(
+        "AWSCloudFormationFullAccess",
+        "AWSLambda_FullAccess",
+        "AmazonCognitoPowerUser",
         "AmazonEC2ContainerRegistryFullAccess",
         "AmazonEC2FullAccess",
         "AmazonECS_FullAccess",
-        "AmazonCognitoPowerUser",
-        "AWSCloudFormationFullAccess",
-        "AWSLambda_FullAccess",
+        "AmazonS3FullAccess",
         "AmazonSSMFullAccess",
     ).map { ManagedPolicy.fromAwsManagedPolicyName(it) }
 
