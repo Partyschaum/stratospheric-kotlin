@@ -51,7 +51,7 @@ fun main() {
     val managedGroupPolicies2 = listOf(
         "AmazonS3FullAccess",
         "AmazonSSMFullAccess",
-        "IAMReadOnlyAccess",
+        "IAMFullAccess",
         "job-function/SystemAdministrator",
     ).map { ManagedPolicy.fromAwsManagedPolicyName(it) }
 
