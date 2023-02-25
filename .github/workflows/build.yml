@@ -8,11 +8,16 @@ on:
       - master
     paths:
       - application/**
+      - cdk/**/*Service*
+      - cdk/build.gradle.kts
+
   pull_request:
     branches:
       - master
     paths:
       - application/**
+      - cdk/**/*Service*
+      - cdk/build.gradle.kts
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
