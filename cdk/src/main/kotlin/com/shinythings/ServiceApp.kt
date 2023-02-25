@@ -15,7 +15,8 @@ fun main() {
     val applicationName = app.node["applicationName"]
     val environmentName = app.node["environmentName"]
     val springProfile = app.node["springProfile"]
-    val dockerImageUrl = app.node["dockerImageUrl"]
+    val dockerImageTag = app.node["dockerImageTag"]
+    val dockerImageRepositoryName = app.node["dockerImageRepositoryName"]
 
     val awsEnvironment = makeEnv(accountId, region)
 
@@ -33,7 +34,7 @@ fun main() {
     val networkOutputParameters =
         Network.getOutputParametersFromParameterStore(serviceStack, applicationEnvironment.environmentName)
 
-    val dockerImageSource = Service.DockerImageSource(dockerImageUrl)
+    val dockerImageSource = Service.DockerImageSource(dockerImageRepositoryName, dockerImageTag)
     val environmentVariables = mapOf("SPRING_PROFILES_ACTIVE" to springProfile)
     val serviceInputParameters = Service.ServiceInputParameters(dockerImageSource, environmentVariables)
         .withHealthCheckIntervalSeconds(30)

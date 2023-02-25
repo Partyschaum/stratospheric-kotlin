@@ -5,6 +5,7 @@
     "accountId": "582537948899",
     "springProfile": "aws",
     "environmentName": "staging",
-    "dockerImageUrl": "docker.io/stratospheric/todo-app-v1:latest"
+    "dockerRepositoryName": "todo-app",
+    "dockerImageTag": "DYNAMICALLY_OVERRIDDEN_BY_WORKFLOW"
   }
 }
