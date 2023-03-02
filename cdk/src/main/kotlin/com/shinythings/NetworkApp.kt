@@ -2,6 +2,8 @@ package com.shinythings
 
 import dev.stratospheric.cdk.Network
 import software.amazon.awscdk.App
+import software.amazon.awscdk.CfnOutput
+import software.amazon.awscdk.CfnOutputProps
 import software.amazon.awscdk.Stack
 import software.amazon.awscdk.StackProps
 
@@ -26,7 +28,7 @@ fun main() {
             .build(),
     )
 
-    Network(
+    val network = Network(
         networkStack,
         "Network",
         awsEnvironment,
@@ -34,6 +36,15 @@ fun main() {
         Network.NetworkInputParameters().apply {
             sslCertificateArn?.let { withSslCertificateArn(sslCertificateArn) }
         },
+    )
+
+    CfnOutput(
+        networkStack,
+        "loadBalancerDnsName",
+        CfnOutputProps.builder()
+            .exportName("loadBalancerDnsName")
+            .value(network.outputParameters.loadBalancerDnsName)
+            .build()
     )
 
     app.synth()
