@@ -198,6 +198,7 @@ class CognitoStack(
 
         val describeUserPoolResource = AwsCustomResource.Builder.create(this, "describeUserPool")
             .resourceType("Custom::DescribeCognitoUserPoolClient")
+            .installLatestAwsSdk(false)
             .onCreate(fetchUserPoolClientMetadata)
             .onUpdate(fetchUserPoolClientMetadata)
             .policy(
@@ -237,7 +238,7 @@ class CognitoStack(
             providerUrl = getParameter(scope, ParameterName.USER_POOL_PROVIDER_URL, applicationEnvironment),
         )
         private fun createParameterName(applicationEnvironment: ApplicationEnvironment, parameterName: ParameterName) =
-            "${applicationEnvironment.environmentName}+${applicationEnvironment.applicationName}+Cognito-${parameterName.identifier}"
+            "${applicationEnvironment.environmentName}-${applicationEnvironment.applicationName}-Cognito-${parameterName.identifier}"
 
         private fun getParameter(
             scope: Construct,

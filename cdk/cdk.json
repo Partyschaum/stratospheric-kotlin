@@ -1,11 +1,13 @@
 {
   "context": {
-    "applicationName": "todo-app",
-    "region": "eu-central-1",
     "accountId": "582537948899",
-    "springProfile": "aws",
-    "environmentName": "staging",
+    "applicationName": "todo-app",
+    "applicationUrl": "https://todo.shinythings.de",
+    "dockerImageTag": "DYNAMICALLY_OVERRIDDEN_BY_WORKFLOW",
     "dockerRepositoryName": "todo-app",
-    "dockerImageTag": "DYNAMICALLY_OVERRIDDEN_BY_WORKFLOW"
+    "environmentName": "staging",
+    "loginPageDomainPrefix": "stratospheric-staging",
+    "region": "eu-central-1",
+    "springProfile": "aws"
   }
 }

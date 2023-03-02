@@ -6,7 +6,7 @@ import software.amazon.awscdk.App
 fun main() {
     val app = App()
 
-    val environmentName = app.node["environmentNam"]
+    val environmentName = app.node["environmentName"]
     val applicationName = app.node["applicationName"]
     val accountId = app.node["accountId"]
     val region = app.node["region"]
