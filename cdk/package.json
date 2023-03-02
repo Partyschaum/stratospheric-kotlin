@@ -10,6 +10,8 @@
     "repository:destroy": "cdk destroy --app \"./gradlew -q run -Papp=DockerRepositoryAppKt\" --force --require-approval never",
     "service:deploy": "cdk deploy --app \"./gradlew -q run -Papp=ServiceAppKt\" --require-approval never",
     "service:destroy": "cdk destroy --app \"./gradlew -q run -Papp=ServiceAppKt\" --force --require-approval never",
+    "cognito:deploy": "cdk deploy --app \"./gradlew -q run -Papp=CognitoAppKt\" --require-approval never",
+    "cognito:destroy": "cdk destroy --app \"./gradlew -q run -Papp=CognitoAppKt\" --force --require-approval never",
     "deploy": "npm run repository:deploy && npm run network:deploy && npm run service:deploy",
     "destroy": "npm run service:destroy && npm run network:destroy && npm run repository:destroy",
     "gitHubActionsUser:deploy": "cdk deploy --app \"./gradlew -q run -Papp=GitHubActionsAppKt\" --force --require-approval never",
